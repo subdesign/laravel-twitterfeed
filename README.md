@@ -8,8 +8,8 @@
 
 3. Call the library in controller / view and show in unordered list style
 
-     Twitter::timeline_list('subdesign', 5);
+       Twitter::timeline_list('subdesign', 5);
 
 OR use as you want
 
-     Twitter::timeline('subdesign', 5); 
+       Twitter::timeline('subdesign', 5); 
