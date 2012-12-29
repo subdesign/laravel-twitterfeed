@@ -56,7 +56,10 @@ class Twitter {
 			
 			foreach ($tweets as $tweet)
 			{
-				$html .= '<li><p>'.$tweet->text.'</p>';
+				$time = self::elapsedTime($tweet->when);
+
+				$html .= '<li><p>'.$tweet->text;
+				$html .= ' - <small>'.self::elapsedTimeString($time).'</small></p>';
 				$html .= '</li>';
 			}
 			
@@ -80,5 +83,73 @@ class Twitter {
 		$string = preg_replace('/\s(http|https)\:\/\/(.+?)\s/m', '<a href="$1://$2" target="_blank">$1://$2</a>', $string);
 	
 		return $string;		
-	} 
+	}
+	
+	public static function elapsedTime ( $start, $end = false) {
+		$returntime = array();
+		
+		// set defaults
+		if ($end == false) {
+			$end = time();
+		}
+
+		$diff = $end - $start;
+		$days = floor($diff/86400); 
+		$diff = $diff - ($days*86400); 
+
+		$hours = floor ($diff/3600); 
+		$diff = $diff - ($hours*3600); 
+
+		$mins = floor ($diff/60); 
+		$diff = $diff - ($mins*60); 
+
+		$secs = $diff;
+
+		if ($secs > 0) {
+			$returntime['secs'] = $secs;
+		}
+		else {
+			$returntime['secs'] = 0;
+		}
+
+		if ($mins > 0) {
+			$returntime['mins'] = $mins;
+		}
+		else {
+			$returntime['mins'] = 0;
+		}
+
+		if ($hours > 0) {
+			$returntime['hours'] = $hours;
+		}
+		else {
+			$returntime['hours'] = 0;
+		}
+
+		if ($days > 0) {
+			$returntime['days'] = $days;
+		}
+		else {
+			$returntime['days'] = 0;
+		}
+
+		return $returntime;
+	}
+	
+	public static function elapsedTimeString($elapsedtime) {
+		if ($elapsedtime['days'] == 0) {
+			if ($elapsedtime['hours'] == 0) {
+					// show minutes
+				return $elapsedtime['mins'] . " minute" . (($elapsedtime['mins']>1) ? "s":"") . " ago";
+			}
+			else {
+					// show hours
+				return $elapsedtime['hours'] . " hour" . (($elapsedtime['hours']>1) ? "s":"") . " ago";
+			}
+		}
+		else {
+				// show days
+			return $elapsedtime['days'] . " day" . (($elapsedtime['days']>1) ? "s":"") . " ago";
+		}
+	}
 }
