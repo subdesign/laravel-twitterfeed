@@ -56,7 +56,10 @@ class Twitter {
 			
 			foreach ($tweets as $tweet)
 			{
-				$html .= '<li><p>'.$tweet->text.' - <small>'.$tweet->when.'</small></p>';
+				$time = self::elapsedTime($tweet->when);
+
+				$html .= '<li><p>'.$tweet->text;
+				$html .= ' - <small>'.self::elapsedTimeString($time).'</small></p>';
 				$html .= '</li>';
 			}
 			
@@ -82,7 +85,7 @@ class Twitter {
 		return $string;		
 	}
 	
-	public static function  elapsedTime ( $start, $end = false) {
+	public static function elapsedTime ( $start, $end = false) {
 		$returntime = array();
 		
 		// set defaults
@@ -133,7 +136,7 @@ class Twitter {
 		return $returntime;
 	}
 	
-	public static function  elapsedTimeString($elapsedtime) {
+	public static function elapsedTimeString($elapsedtime) {
 		if ($elapsedtime['days'] == 0) {
 			if ($elapsedtime['hours'] == 0) {
 					// show minutes
